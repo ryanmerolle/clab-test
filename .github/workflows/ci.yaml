@@ -39,8 +39,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          echo "deb [trusted=yes] https://apt.fury.io/netdevops/ /" | tee -a /etc/apt/sources.list.d/netdevops.list
-          apt-get update && apt-get install -y containerlab
+          echo "deb [trusted=yes] https://apt.fury.io/netdevops/ /" | sudo tee -a /etc/apt/sources.list.d/netdevops.list
+          sudo apt-get update && sudo apt-get install -y containerlab
 
       - name: Run tests with clab
         run: |
