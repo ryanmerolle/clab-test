@@ -1,0 +1,54 @@
+name: Container Lab CI
+
+on: [push, pull_request]
+
+jobs:
+  clab_test_dind:
+    name: CLab Test with Docker-in-Docker
+    runs-on: ubuntu-latest
+    services:
+      docker:
+        image: docker:dind
+        options: --privileged
+        ports:
+          - 2375:2375
+
+    steps:
+
+      - name: Set up Docker environment
+        run: |
+          echo "DOCKER_HOST=tcp://localhost:2375/" >> $GITHUB_ENV
+          echo "DOCKER_TLS_CERTDIR=" >> $GITHUB_ENV
+
+      - name: Run tests with clab (DinD)
+        run: |
+          docker info
+          docker network list
+          docker pull ghcr.io/srl-labs/clab
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/srl-labs/clab clab version
+          containerlab generate --name test --image srl=srlinux --nodes 8,4 deploy
+          docker ps
+          docker network list
+          docker network inspect clab
+
+  clab_test_docker:
+    name: CLab Test with Docker
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Install dependencies
+        run: |
+          echo "deb [trusted=yes] https://apt.fury.io/netdevops/ /" | tee -a /etc/apt/sources.list.d/netdevops.list
+          apt-get update && apt-get install -y containerlab
+
+      - name: Run tests with clab
+        run: |
+          docker info
+          docker network list
+          docker pull ghcr.io/srl-labs/clab
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/srl-labs/clab clab version
+          containerlab generate --name test --image srl=srlinux --nodes 8,4 deploy
+          docker ps
+          docker network list
+          docker network inspect clab
