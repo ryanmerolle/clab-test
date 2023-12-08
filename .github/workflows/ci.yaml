@@ -23,5 +23,5 @@ jobs:
       - name: install clab
         run: bash -c "$(curl -sL https://get.containerlab.dev)"
 
-      - name: Run tests with clab (DinD)
+      - name: Run tests with clab
         run: sudo containerlab generate --name test --image srl=ghcr.io/nokia/srlinux --nodes 1,2 --deploy
