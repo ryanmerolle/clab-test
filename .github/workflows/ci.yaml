@@ -8,6 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/srl-labs/clab
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock \
+        - /var/run/netns:/var/run/netns \
+        - /etc/hosts:/etc/hosts \
+        - /var/lib/docker/containers:/var/lib/docker/containers \
+      options: --pid="host"
 
     steps:
 
