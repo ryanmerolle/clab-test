@@ -5,11 +5,13 @@ on: [push, pull_request]
 jobs:
   clab_test_docker:
     name: CLab Test with Docker
-    runs-on: ghcr.io/srl-labs/clab
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/srl-labs/clab
 
     steps:
 
-      - name: Run tests with clab (DinD)
+      - name: Run tests with clab (Docker)
         run: containerlab generate --name test --image srl=srlinux --nodes 8,4 --deploy
 
   clab_test_bash:
@@ -19,7 +21,7 @@ jobs:
     steps:
 
       - name: install clab
-        run: bash -c "$(curl -sL https://get.containerlab.dev)" -- -v 0.48.1
+        run: bash -c "$(curl -sL https://get.containerlab.dev)"
 
       - name: Run tests with clab (DinD)
         run: containerlab generate --name test --image srl=srlinux --nodes 8,4 --deploy
