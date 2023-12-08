@@ -12,7 +12,7 @@ jobs:
     steps:
 
       - name: Run tests with clab (Docker)
-        run: sudo containerlab generate --name test --image srl=srlinux --nodes 8,4 --deploy
+        run: sudo containerlab generate --name test --image srl=ghcr.io/nokia/srlinux --nodes 8,4 --deploy
 
   clab_test_bash:
     name: CLab Test without Docker
@@ -24,4 +24,4 @@ jobs:
         run: bash -c "$(curl -sL https://get.containerlab.dev)"
 
       - name: Run tests with clab (DinD)
-        run: sudo containerlab generate --name test --image srl=srlinux --nodes 8,4 --deploy
+        run: sudo containerlab generate --name test --image srl=ghcr.io/nokia/srlinux --nodes 8,4 --deploy
